@@ -1,0 +1,60 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Affine Cipher</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo"></div>
+      <h1>Affine Cipher</h1>
+      <nav class="nav">
+        <a href="index.html">Classical</a>
+        <a href="caesar.html">Caesar</a>
+        <a href="shift.html">Shift</a>
+        <a href="transposition.html">Transposition</a>
+      </nav>
+    </header>
+
+    <section class="card" aria-label="Affine tool">
+      <p>Affine uses <span class="code">E(x) = (a·x + b) mod 26</span>. Valid <span class="code">a</span> are coprime with 26.</p>
+      <label for="affine-input">Input</label>
+      <textarea id="affine-input">Affine Cipher Example</textarea>
+      <div class="controls">
+        <label class="small">a</label>
+        <select id="affine-a">
+          <option>1</option><option>3</option><option>5</option><option>7</option><option>9</option><option>11</option>
+          <option>15</option><option>17</option><option>19</option><option>21</option><option>23</option><option>25</option>
+        </select>
+        <label class="small">b</label>
+        <input type="number" id="affine-b" value="8" min="0" max="25" />
+        <button class="btn primary" id="affine-encrypt">Encrypt</button>
+        <button class="btn" id="affine-decrypt">Decrypt</button>
+      </div>
+      <div class="alert small" id="affine-alert" aria-live="polite"></div>
+      <label for="affine-output">Result</label>
+      <textarea id="affine-output" readonly></textarea>
+    </section>
+
+    <footer class="footer"><small>Pick an <span class="code">a</span> coprime with 26 to ensure invertibility.</small></footer>
+  </div>
+  <script src="../../assets/site.js"></script>
+  <script>
+    function updateAffine(mode){
+      const text = byId('affine-input').value;
+      const a = parseInt(byId('affine-a').value, 10);
+      const b = parseInt(byId('affine-b').value||'0', 10);
+      const out = (mode==='enc') ? affineEncrypt(text, a, b) : affineDecrypt(text, a, b);
+      if(out===null){ setText('affine-alert', 'Invalid parameters: a must have modular inverse mod 26.'); setValue('affine-output',''); }
+      else { setText('affine-alert',''); setValue('affine-output', out); }
+    }
+    byId('affine-encrypt').addEventListener('click', ()=> updateAffine('enc'));
+    byId('affine-decrypt').addEventListener('click', ()=> updateAffine('dec'));
+    updateAffine('enc');
+  </script>
+</body>
+</html>

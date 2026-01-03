@@ -1,0 +1,52 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caesar Cipher</title>
+  <link rel="stylesheet" href="../../assets/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo"></div>
+      <h1>Caesar Cipher</h1>
+      <nav class="nav">
+        <a href="index.html">Classical</a>
+        <a href="shift.html">Shift</a>
+        <a href="affine.html">Affine</a>
+        <a href="transposition.html">Transposition</a>
+      </nav>
+    </header>
+
+    <section class="card" aria-label="Caesar tool">
+      <label for="caesar-input">Input</label>
+      <textarea id="caesar-input">HELLO WORLD</textarea>
+      <div class="controls">
+        <label class="small">Shift</label>
+        <input type="number" id="caesar-shift" value="3" min="-25" max="25" />
+        <button class="btn primary" id="caesar-encrypt">Encrypt</button>
+        <button class="btn" id="caesar-decrypt">Decrypt</button>
+      </div>
+      <label for="caesar-output">Result</label>
+      <textarea id="caesar-output" readonly></textarea>
+      <p class="small">Formula: <span class="code">E(x) = (x + n) mod 26</span></p>
+    </section>
+
+    <footer class="footer"><small>Letters A–Z/a–z are shifted; other characters stay unchanged.</small></footer>
+  </div>
+  <script src="../../assets/site.js"></script>
+  <script>
+    function updateCaesar(mode){
+      const text = byId('caesar-input').value;
+      const s = parseInt(byId('caesar-shift').value||'0',10);
+      const eff = mode==='enc'? s : -s;
+      setValue('caesar-output', caesar(text, eff));
+    }
+    byId('caesar-encrypt').addEventListener('click', ()=> updateCaesar('enc'));
+    byId('caesar-decrypt').addEventListener('click', ()=> updateCaesar('dec'));
+    updateCaesar('enc');
+  </script>
+</body>
+</html>
